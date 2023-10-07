@@ -18,7 +18,7 @@ func NewLinkedList() *linkedList {
 	return &linkedList{}
 }
 
-func (l *linkedList) Add(data int64) {
+func (l *linkedList) Prepend(data int64) {
 	newNode := &node{data: data}
 
 	if l.head == nil {
@@ -82,6 +82,16 @@ func (l *linkedList) Length() uint64 {
 	return l.len
 }
 
+// pass the head
+func (l *linkedList) PrintReverse(head *node) {
+	if head == nil {
+		return
+	}
+
+	l.PrintReverse(head.next)
+	fmt.Println(head.data)
+}
+
 // when data stores in a linked list it will be a sequence of nodes.
 // the linked list is linked with each other.
 // each node contains a address to the next node.
@@ -102,12 +112,12 @@ func main() {
 
 	list := NewLinkedList()
 
-	list.Add(89)
-	list.Add(99)
+	list.Prepend(89)
+	list.Prepend(99)
 	list.Traverse()
-	list.Remove(89)
 	list.Traverse()
 	fmt.Println(list.Contains(99))
 	fmt.Println(list.Length())
+	list.PrintReverse(list.head)
 
 }
