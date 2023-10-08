@@ -46,8 +46,8 @@ func (s *Stack) Peek() (interface{}, error) {
 }
 
 func (s *Stack) PrintStack() {
-	for i, e := range s.items {
-		fmt.Printf("index : %v, element : %v\n", i, e)
+	for _, e := range s.items {
+		fmt.Printf(" element : %v\n", e)
 	}
 }
 
@@ -55,11 +55,58 @@ func (s *Stack) Size() int {
 	return len(s.items)
 }
 
+//: Stacks are very efficient for adding and removing elements. This is because elements are always added and removed from the top of the stack, which is called the Last-In-First-Out (LIFO) principle.
+
+//LIFO
+
+// use-case
+
+// Stacks are used to manage function calls and memory allocation in operating systems.
+
+// Stacks are used to implement undo/redo functionality in many software applications.
+
+// Stacks are used to implement backtracking algorithms
+
+func Undo(undoStack, stack *Stack) {
+	if stack.IsEmpty() {
+		return
+	}
+	val, err := stack.Pop()
+	if err != nil {
+		return
+	}
+	undoStack.Push(val)
+	fmt.Println("undo")
+}
+
+func Redo(stack, undoStack *Stack) {
+	if undoStack.IsEmpty() {
+		return
+	}
+
+	val, err := undoStack.Pop()
+	if err != nil {
+		return
+	}
+	stack.Push(val)
+
+	fmt.Println("redo")
+}
+
 func main() {
 	stack := NewStack()
+	undoStack := NewStack()
+
 	stack.Push("hello")
 	stack.Push(1)
 	stack.Push(true)
 
+	Undo(undoStack, stack)
+	undoStack.PrintStack()
+
+	Redo(stack, undoStack)
 	stack.PrintStack()
+
+	fmt.Println("undo stack")
+	undoStack.PrintStack()
 }
